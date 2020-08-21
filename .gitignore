@@ -1,0 +1,7 @@
+.vscode/
+django-projects/hashthat-project/
+django-projects/portfolio-project/
+django-projects/venv/
+django-projects/func_tests.py
+django-projects/requirements.txt
+django-projects/script.py

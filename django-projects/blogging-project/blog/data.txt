@@ -1,0 +1,100 @@
+In [2]: from blog.models import Post                                                                      
+
+In [3]: from django.contrib.auth.models import User                                                       
+
+In [4]: user = User.objects.filter(username='pragyajain').first                                           
+
+In [5]:  user = User.objects.filter(username='pragyajain').first()                                        
+
+In [6]: user                                                                                              
+Out[6]: <User: pragyajain>
+
+In [7]: post_1 =  Post(title='Blog 1', content='First Post Content', author=user)                         
+
+In [8]: post_1.save()                                                                                     
+
+In [9]: Post.objects.all()                                                                                
+Out[9]: <QuerySet [<Post: Blog 1>]>
+
+In [10]: post_2 =  Post(title='Blog 2', content='Second Post Content', author_id=user.id)                 
+
+In [11]: post_2.save()                                                                                    
+
+In [12]: Post.objects.all()                                                                               
+Out[12]: <QuerySet [<Post: Blog 1>, <Post: Blog 2>]>
+
+In [13]: post = Post.objects.first()                                                                      
+
+In [14]:  post.content                                                                                    
+Out[14]: 'First Post Content'
+
+In [15]: post.date_posted                                                                                 
+Out[15]: datetime.datetime(2020, 8, 15, 10, 40, 9, 77914, tzinfo=<UTC>)
+
+In [16]: post.author                                                                                      
+Out[16]: <User: pragyajain>
+
+In [17]: post.author.email                                                                                
+Out[17]: 'pragyajain2@gmail.com'
+
+In [18]: user.post_set                                                                                    
+Out[18]: <django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager at 0x7f839617fc50>
+
+In [19]: user.post_set.all()                                                                              
+Out[19]: <QuerySet [<Post: Blog 1>, <Post: Blog 2>]>
+
+In [20]: user.post_set.create(title='Blog 3', content='Third Post Content')                               
+Out[20]: <Post: Blog 3>
+
+In [21]: user.post_set.all()                                                                              
+Out[21]: <QuerySet [<Post: Blog 1>, <Post: Blog 2>, <Post: Blog 3>]>
+
+// using shell to upload data from json file 
+In [1]: import json                                                                                       
+
+In [2]: from blog.models import Post                                                                      
+
+In [3]: with open('posts.json') as f: 
+   ...:     posts_json = json.load(f) 
+   ...:                            
+In [5]:   for post in posts_json: 
+   ...:     post = Post(title=post['title'], content=post['content'], author_id=post['user_id']) 
+   ...:     post.save()    
+
+// Pagination
+In [1]: from django.core.paginator import Paginator                                                       
+
+In [2]: posts = ['1', '2', '3', '4', '5']                                                                 
+
+In [3]:  p = Paginator(posts, 2)                                                                          
+
+In [4]:  p.num_pages                                                                                      
+Out[4]: 3
+
+In [5]: for page in p.page_range: 
+   ...:     print(page) 
+   ...:                                                                                                   
+1
+2
+3
+
+In [6]:  p1 = p.page(1)                                                                                   
+
+In [7]: p1                                                                                                
+Out[7]: <Page 1 of 3>
+
+In [8]: p1.number                                                                                         
+Out[8]: 1
+
+In [9]: p1.object_list                                                                                    
+Out[9]: ['1', '2']
+
+In [10]: p1.has_previous()                                                                                
+Out[10]: False
+
+In [11]: p1.has_next()                                                                                    
+Out[11]: True
+
+In [12]: p1.next_page_number()                                                                            
+Out[12]: 2
+
